@@ -1,4 +1,4 @@
-from sqlalchemy import String, Integer, Boolean
+from sqlalchemy import String, Integer, Boolean, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .base import BaseModel
@@ -7,7 +7,7 @@ from .base import BaseModel
 class QuizResults(BaseModel):
     __tablename__ = "quiz_results"
 
-    user_id: Mapped[int] = mapped_column(Integer)
+    user_id: Mapped[int] = mapped_column(BigInteger)
     first_name: Mapped[str] = mapped_column(String)
     last_name: Mapped[str] = mapped_column(String)
     other: Mapped[str] = mapped_column(String)

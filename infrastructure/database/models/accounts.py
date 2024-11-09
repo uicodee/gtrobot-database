@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, Text
+from sqlalchemy import Integer, Text, String, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .base import BaseModel
@@ -9,10 +9,10 @@ class Accounts(BaseModel):
 
     user_id: Mapped[int] = mapped_column(Integer)
     referral_token: Mapped[str] = mapped_column(Text)
-    account_name: Mapped[str] = mapped_column(Text, default="NoName")
+    account_name: Mapped[str] = mapped_column(String, default="NoName")
     access_token: Mapped[str] = mapped_column(Text)
     refresh_token: Mapped[str] = mapped_column(Text)
-    bot_name: Mapped[str] = mapped_column(Text)
-    is_active: Mapped[bool] = mapped_column(Integer)
-    is_error: Mapped[bool] = mapped_column(Integer)
+    bot_name: Mapped[str] = mapped_column(String)
+    is_active: Mapped[bool] = mapped_column(Boolean)
+    is_error: Mapped[bool] = mapped_column(Boolean)
     date: Mapped[int] = mapped_column(Integer)

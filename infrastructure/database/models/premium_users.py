@@ -1,4 +1,4 @@
-from sqlalchemy import Numeric, String, Boolean, Integer
+from sqlalchemy import String, Boolean, Integer, BigInteger
 from sqlalchemy.orm import mapped_column, Mapped
 
 from .base import BaseModel
@@ -7,7 +7,7 @@ from .base import BaseModel
 class PremiumUsers(BaseModel):
     __tablename__ = "premium_users"
 
-    user_id: Mapped[int] = mapped_column(Numeric, unique=True, nullable=False)
+    user_id: Mapped[int] = mapped_column(BigInteger, unique=True)
     tariff_plan: Mapped[str] = mapped_column(String)
     name: Mapped[str] = mapped_column(String)
     username: Mapped[str] = mapped_column(String)
