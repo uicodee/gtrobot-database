@@ -5,7 +5,7 @@ from .base import BaseModel
 
 
 class QuizResults(BaseModel):
-    __tablename__ = 'quiz_results'
+    __tablename__ = "quiz_results"
 
     user_id: Mapped[int] = mapped_column(Integer)
     first_name: Mapped[str] = mapped_column(String)

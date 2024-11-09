@@ -5,7 +5,7 @@ from .base import BaseModel
 
 
 class AutoDeleteMessage(BaseModel):
-    __tablename__ = 'autodelete_message'
+    __tablename__ = "autodelete_message"
 
     user_id: Mapped[int] = mapped_column(Integer)
     message_id: Mapped[int] = mapped_column(Integer)

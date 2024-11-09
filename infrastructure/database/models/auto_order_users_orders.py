@@ -5,7 +5,7 @@ from .base import BaseModel
 
 
 class AutoOrderUsersOrders(BaseModel):
-    __tablename__ = 'auto_order_users_orders'
+    __tablename__ = "auto_order_users_orders"
 
     user_name: Mapped[str] = mapped_column(Text, nullable=False)
     symbol: Mapped[str] = mapped_column(Text, nullable=False)
@@ -22,4 +22,4 @@ class AutoOrderUsersOrders(BaseModel):
     is_spot_order: Mapped[bool] = mapped_column(Boolean, default=True)
     is_market: Mapped[bool] = mapped_column(Boolean, default=True)
     is_take_profit: Mapped[bool] = mapped_column(Boolean, default=False)
-    order_status: Mapped[str] = mapped_column(Text, default='new', nullable=False)
+    order_status: Mapped[str] = mapped_column(Text, default="new", nullable=False)

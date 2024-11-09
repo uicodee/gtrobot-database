@@ -5,7 +5,7 @@ from .base import BaseModel
 
 
 class PremiumUsers(BaseModel):
-    __tablename__ = 'premium_users'
+    __tablename__ = "premium_users"
 
     user_id: Mapped[int] = mapped_column(Numeric, unique=True, nullable=False)
     tariff_plan: Mapped[str] = mapped_column(String)

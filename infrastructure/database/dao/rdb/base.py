@@ -1,9 +1,4 @@
-from typing import (
-    List,
-    TypeVar,
-    Type,
-    Generic
-)
+from typing import List, TypeVar, Type, Generic
 
 from pydantic import TypeAdapter
 from sqlalchemy import delete, func
@@ -17,24 +12,24 @@ Model = TypeVar("Model", Base, Base)
 
 class BaseDAO(Generic[Model]):
     def __init__(
-            self,
-            model: Type[Model],
-            session: AsyncSession,
+        self,
+        model: Type[Model],
+        session: AsyncSession,
     ):
         self.model = model
         self.session = session
 
     async def _get_all(
-            self,
+        self,
     ) -> List[Model]:
         result = await self.session.execute(select(self.model))
         adapter = TypeAdapter(list[Model])
         return adapter.validate_python(result.scalars().all())
 
     async def _get_by_id(
-            self,
-            id_: int,
-            options: list[Load] = None,
+        self,
+        id_: int,
+        options: list[Load] = None,
     ) -> Model:
         query = select(self.model).where(self.model.id == id_)
         if options:
@@ -43,30 +38,30 @@ class BaseDAO(Generic[Model]):
         return result.scalar_one()
 
     def _save(
-            self,
-            obj: Model,
+        self,
+        obj: Model,
     ):
         self.session.add(obj)
 
     async def delete_all(
-            self,
+        self,
     ):
         await self.session.execute(delete(self.model))
 
     async def _delete(
-            self,
-            obj: Model,
+        self,
+        obj: Model,
     ):
         await self.session.delete(obj)
 
     async def count(
-            self,
+        self,
     ):
         result = await self.session.execute(select(func.count(self.model.id)))
         return result.scalar_one()
 
     async def commit(
-            self,
+        self,
     ):
         await self.session.commit()
 

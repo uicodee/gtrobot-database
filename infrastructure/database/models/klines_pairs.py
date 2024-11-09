@@ -5,7 +5,7 @@ from .base import BaseModel
 
 
 class KlinesPairs(BaseModel):
-    __tablename__ = 'klines_pairs'
+    __tablename__ = "klines_pairs"
 
     user_id: Mapped[int] = mapped_column(Integer)
     pair: Mapped[str] = mapped_column(String)

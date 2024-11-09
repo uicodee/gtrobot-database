@@ -4,7 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 
 class UzumPayment(BaseModel):
-    __tablename__ = 'uzum_payment'
+    __tablename__ = "uzum_payment"
 
     user_id: Mapped[float] = mapped_column(Numeric)
     first_name: Mapped[str] = mapped_column(Text)

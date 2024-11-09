@@ -4,7 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 
 class AffiliateUsersWithdraw(BaseModel):
-    __tablename__ = 'affiliate_users_withdraw'
+    __tablename__ = "affiliate_users_withdraw"
 
     user_id: Mapped[float] = mapped_column(Numeric)
     user_sum: Mapped[float] = mapped_column(Numeric)

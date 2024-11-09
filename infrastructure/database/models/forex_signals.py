@@ -5,7 +5,7 @@ from infrastructure.database.models import BaseModel
 
 
 class ForexSignals(BaseModel):
-    __tablename__ = 'forex_signals'
+    __tablename__ = "forex_signals"
 
     symbol: Mapped[str] = mapped_column(Text)
     type: Mapped[str] = mapped_column(Text)

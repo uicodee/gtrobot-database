@@ -5,7 +5,7 @@ from .base import BaseModel
 
 
 class BalanceHistory(BaseModel):
-    __tablename__ = 'balance_history'
+    __tablename__ = "balance_history"
 
     user_id: Mapped[int] = mapped_column(Integer)
     balance: Mapped[float] = mapped_column(Numeric)

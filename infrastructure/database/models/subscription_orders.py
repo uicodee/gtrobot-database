@@ -5,7 +5,7 @@ from .base import BaseModel
 
 
 class SubscriptionOrders(BaseModel):
-    __tablename__ = 'subscription_orders'
+    __tablename__ = "subscription_orders"
 
     query_id: Mapped[int] = mapped_column(Integer, unique=True)
     user_id: Mapped[int] = mapped_column(Integer)

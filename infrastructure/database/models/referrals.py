@@ -5,7 +5,7 @@ from .base import BaseModel
 
 
 class Referrals(BaseModel):
-    __tablename__ = 'referrals'
+    __tablename__ = "referrals"
 
     user_id: Mapped[int] = mapped_column(Integer)
     referral_user_id: Mapped[int] = mapped_column(Integer)

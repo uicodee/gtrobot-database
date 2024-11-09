@@ -5,7 +5,7 @@ from .base import BaseModel
 
 
 class P2PPairsExchange(BaseModel):
-    __tablename__ = 'p2p_pairs_exchange'
+    __tablename__ = "p2p_pairs_exchange"
 
     profit: Mapped[float] = mapped_column(Numeric)
     asset: Mapped[str] = mapped_column(Text)

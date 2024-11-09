@@ -5,7 +5,7 @@ from .base import BaseModel
 
 
 class Users(BaseModel):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     user_id: Mapped[int] = mapped_column(Integer)
     status: Mapped[str] = mapped_column(String, default="start")

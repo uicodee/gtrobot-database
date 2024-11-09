@@ -4,7 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 
 class MiningSubscriptionOrders(BaseModel):
-    __tablename__ = 'mining_subscription_orders'
+    __tablename__ = "mining_subscription_orders"
 
     query_id: Mapped[int] = mapped_column(Integer, unique=True)
     user_id: Mapped[int] = mapped_column(Integer)

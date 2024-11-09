@@ -5,7 +5,7 @@ from infrastructure.database.models import BaseModel
 
 
 class ReplyMessages(BaseModel):
-    __tablename__ = 'reply_messages'
+    __tablename__ = "reply_messages"
 
     user_id: Mapped[int] = mapped_column(Integer)
     original_message_id: Mapped[int] = mapped_column(Integer)

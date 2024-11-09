@@ -4,7 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 
 class AffiliateUsersHistory(BaseModel):
-    __tablename__ = 'affiliate_users_history'
+    __tablename__ = "affiliate_users_history"
 
     user_id: Mapped[float] = mapped_column(Numeric)
     user_earnings: Mapped[float] = mapped_column(Numeric)

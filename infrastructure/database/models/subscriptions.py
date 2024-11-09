@@ -5,7 +5,7 @@ from infrastructure.database.models import BaseModel
 
 
 class Subscriptions(BaseModel):
-    __tablename__ = 'subscriptions'
+    __tablename__ = "subscriptions"
 
     name: Mapped[str] = mapped_column(String)
     stars_price: Mapped[int] = mapped_column(Integer)

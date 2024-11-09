@@ -4,7 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 
 class Purchases(BaseModel):
-    __tablename__ = 'purchases'
+    __tablename__ = "purchases"
 
     user_id: Mapped[int] = mapped_column(Integer)
     name: Mapped[str] = mapped_column(Text)

@@ -5,9 +5,9 @@ from .base import BaseModel
 
 
 class SocialNetworksLinks(BaseModel):
-    __tablename__ = 'social_networks_links'
+    __tablename__ = "social_networks_links"
 
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('profiles.user_id'))
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("profiles.user_id"))
     is_profile: Mapped[bool] = mapped_column(Boolean)
     user_link: Mapped[str] = mapped_column(String)
     date: Mapped[int] = mapped_column(Integer)

@@ -5,7 +5,7 @@ from .base import BaseModel
 
 
 class Profiles(BaseModel):
-    __tablename__ = 'profiles'
+    __tablename__ = "profiles"
 
     user_id: Mapped[int] = mapped_column(Integer, unique=True, nullable=False)
     user_name: Mapped[str] = mapped_column(String, nullable=False)

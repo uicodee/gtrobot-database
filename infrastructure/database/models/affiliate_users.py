@@ -4,7 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 
 class AffiliateUsers(BaseModel):
-    __tablename__ = 'affiliate_users'
+    __tablename__ = "affiliate_users"
 
     user_id: Mapped[int] = mapped_column(Integer, unique=True)
     user_name: Mapped[str] = mapped_column(Text)

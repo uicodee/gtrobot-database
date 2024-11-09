@@ -5,7 +5,7 @@ from .base import BaseModel
 
 
 class ClosedLeaderboardOrders(BaseModel):
-    __tablename__ = 'closed_leaderboard_orders'
+    __tablename__ = "closed_leaderboard_orders"
 
     position_id: Mapped[int] = mapped_column(Integer)
     user_id: Mapped[int] = mapped_column(Integer)

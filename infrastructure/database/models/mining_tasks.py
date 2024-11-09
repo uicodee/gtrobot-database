@@ -4,7 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 
 class MiningTasks(BaseModel):
-    __tablename__ = 'mining_tasks'
+    __tablename__ = "mining_tasks"
 
     task_text: Mapped[str] = mapped_column(Text)
     task_link: Mapped[str] = mapped_column(Text)

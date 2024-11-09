@@ -5,7 +5,7 @@ from .base import BaseModel
 
 
 class ForexUsersOrderHistory(BaseModel):
-    __tablename__ = 'forex_users_order_history'
+    __tablename__ = "forex_users_order_history"
 
     user_id: Mapped[int] = mapped_column(Integer)
     order_type: Mapped[str] = mapped_column(Text)
