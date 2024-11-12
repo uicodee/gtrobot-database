@@ -14,7 +14,7 @@ from .subscription_services import SubscriptionServices
 from .subscriptions import Subscriptions
 from .user_services import UserServices
 from .user_tokens import UserTokens
-from .users import Users
+from .users import User
 from .users_exchange import UsersExchange
 
 # 5 tables
