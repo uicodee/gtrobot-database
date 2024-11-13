@@ -123,7 +123,7 @@ from .winwin_users import WinWinUsers
 from .video_types import VideoTypes
 from .videos import Videos
 
-# 3 tables
+# 3 tables (bid and sales)
 from .symbols import Symbols
 from .user_symbols import UserSymbols
 from .sale_users import SaleUsers

@@ -10,3 +10,6 @@ from .activated_user_section import ActivatedUserSectionsDAO
 from .reply_messages import ReplyMessagesDAO
 from .user_tokens import UserTokensDAO
 from .user_services import UserServicesDAO
+from .farming import FarmingDAO
+from .forex import ForexDAO
+from .klines import KlinesDAO
