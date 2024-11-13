@@ -5,7 +5,8 @@ from .activated_user_sections import ActivatedUserSections
 from .admin_settings import AdminSettings
 from .course_placeholders import CoursePlaceholders
 from .premium_users import PremiumUsers
-from .profiles import Profiles
+from .profiles import Profile
+from .referrals import Referrals
 from .quiz_results import QuizResults
 from .reply_messages import ReplyMessages
 from .social_networks_links import SocialNetworksLinks

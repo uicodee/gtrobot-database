@@ -4,7 +4,7 @@ from sqlalchemy.orm import mapped_column, Mapped
 from .base import BaseModel
 
 
-class Profiles(BaseModel):
+class Profile(BaseModel):
     __tablename__ = "profiles"
 
     user_id: Mapped[int] = mapped_column(Integer, unique=True)

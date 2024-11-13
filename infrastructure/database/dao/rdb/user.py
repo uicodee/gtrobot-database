@@ -1,6 +1,6 @@
-from typing import Sequence
+from typing import Sequence, Optional
 
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from infrastructure.database.dao.rdb import BaseDAO
@@ -20,3 +20,23 @@ class UsersDAO(BaseDAO[User]):
             select(User.status).where(User.id == user_id)
         )
         return result.scalar()
+
+    async def get_count_users(self) -> Optional[int]:
+        result = await self.session.execute(
+            select(func.count()).select_from(User)
+        )
+        return result.scalar()
+
+    async def get_user_locale(self, user_id: int) -> Optional[str]:
+        result = await self.session.execute(
+            select(User.locale).where(User.user_id == user_id)
+        )
+        return result.scalar()
+
+    async def user_exists(self, user_id: int) -> bool:
+        result = await self.session.execute(
+            select(User).where(User.user_id == user_id)
+        )
+        return result.fetchone() is not None
+
+
