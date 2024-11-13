@@ -11,7 +11,9 @@ class ActivatedUserSectionsDAO(BaseDAO[ActivatedUserSections]):
 
     async def get_user_activated_sections(self, user_id: int) -> List[str]:
         result = await self.session.execute(
-            select(ActivatedUserSections.section).where(ActivatedUserSections.user_id == user_id)
+            select(ActivatedUserSections.section).where(
+                ActivatedUserSections.user_id == user_id
+            )
         )
         return [row[0] for row in result.fetchall()]
 
@@ -19,7 +21,7 @@ class ActivatedUserSectionsDAO(BaseDAO[ActivatedUserSections]):
         result = await self.session.execute(
             select(ActivatedUserSections).where(
                 ActivatedUserSections.user_id == user_id,
-                ActivatedUserSections.section == section
+                ActivatedUserSections.section == section,
             )
         )
         return result.fetchone() is not None

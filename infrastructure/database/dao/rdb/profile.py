@@ -27,7 +27,7 @@ class ProfilesDAO(BaseDAO[Profile]):
                 Profile.user_name,
                 Profile.user_last_name,
                 Profile.user_num,
-                Profile.user_rating
+                Profile.user_rating,
             ).where(Profile.user_id == user_id)
         )
         profile = result.fetchone()
@@ -44,7 +44,7 @@ class ProfilesDAO(BaseDAO[Profile]):
             select(
                 Profile.user_doge_balance,
                 Profile.user_ton_balance,
-                Profile.user_gtu_balance
+                Profile.user_gtu_balance,
             ).where(Profile.user_id == user_id)
         )
         balances = result.fetchone()
@@ -58,7 +58,9 @@ class ProfilesDAO(BaseDAO[Profile]):
 
     async def get_profile_task_link_data(self, user_id: int) -> List[Optional[str]]:
         result = await self.session.execute(
-            select(Profile.invite_link_id, Profile.invite_link).where(Profile.user_id == user_id)
+            select(Profile.invite_link_id, Profile.invite_link).where(
+                Profile.user_id == user_id
+            )
         )
         link_data = result.fetchone()
         return list(link_data) if link_data else []
@@ -68,4 +70,3 @@ class ProfilesDAO(BaseDAO[Profile]):
             select(Profile).where(Profile.user_id == user_id)
         )
         return result.fetchone() is not None
-

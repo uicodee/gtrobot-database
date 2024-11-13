@@ -14,10 +14,10 @@ class ReferralsDAO(BaseDAO[Referrals]):
             select(
                 Referrals.referral_user_id,
                 Referrals.referral_username,
-                Referrals.referral_reg_data
+                Referrals.referral_reg_data,
             ).where(Referrals.user_id == user_id)
         )
-        dict_keys = ['referral_user_id', 'referral_username', 'referral_reg_data']
+        dict_keys = ["referral_user_id", "referral_username", "referral_reg_data"]
         return [dict(zip(dict_keys, row)) for row in result.fetchall()]
 
     async def get_user_referrer(self, user_id: int) -> Optional[int]:
@@ -31,4 +31,3 @@ class ReferralsDAO(BaseDAO[Referrals]):
             select(Referrals.user_id).where(Referrals.referral_user_id == user_id)
         )
         return result.scalar()
-

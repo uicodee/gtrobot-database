@@ -22,9 +22,7 @@ class UsersDAO(BaseDAO[User]):
         return result.scalar()
 
     async def get_count_users(self) -> Optional[int]:
-        result = await self.session.execute(
-            select(func.count()).select_from(User)
-        )
+        result = await self.session.execute(select(func.count()).select_from(User))
         return result.scalar()
 
     async def get_user_locale(self, user_id: int) -> Optional[str]:
@@ -34,9 +32,5 @@ class UsersDAO(BaseDAO[User]):
         return result.scalar()
 
     async def user_exists(self, user_id: int) -> bool:
-        result = await self.session.execute(
-            select(User).where(User.user_id == user_id)
-        )
+        result = await self.session.execute(select(User).where(User.user_id == user_id))
         return result.fetchone() is not None
-
-

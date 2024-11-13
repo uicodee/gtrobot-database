@@ -11,17 +11,18 @@ class SocialNetworksLinksDAO(BaseDAO[SocialNetworksLinks]):
 
     async def get_user_post_links(self, user_id: int, date: str) -> List[str]:
         result = await self.session.execute(
-            select(SocialNetworksLinks.user_link)
-            .where(
+            select(SocialNetworksLinks.user_link).where(
                 SocialNetworksLinks.user_id == user_id,
                 SocialNetworksLinks.is_profile == 0,
-                SocialNetworksLinks.date == date
+                SocialNetworksLinks.date == date,
             )
         )
         return [link for link in result.scalars().all()]
 
     async def link_exists(self, user_link: str) -> bool:
         result = await self.session.execute(
-            select(SocialNetworksLinks).where(SocialNetworksLinks.user_link.ilike(user_link.lower()))
+            select(SocialNetworksLinks).where(
+                SocialNetworksLinks.user_link.ilike(user_link.lower())
+            )
         )
         return result.fetchone() is not None

@@ -20,11 +20,18 @@ class PremiumUsersDAO(BaseDAO[PremiumUsers]):
                 PremiumUsers.subscription_date,
                 PremiumUsers.subscription_days,
                 PremiumUsers.bonus_days,
-                PremiumUsers.is_demo_subscription
+                PremiumUsers.is_demo_subscription,
             ).where(PremiumUsers.user_id == user_id)
         )
-        dict_keys = ['tariff_plan', 'name', 'username', 'subscription_date',
-                     'subscription_days', 'bonus_days', 'is_demo_subscription']
+        dict_keys = [
+            "tariff_plan",
+            "name",
+            "username",
+            "subscription_date",
+            "subscription_days",
+            "bonus_days",
+            "is_demo_subscription",
+        ]
         data = result.fetchone()
         return dict(zip(dict_keys, data)) if data else {}
 
@@ -37,10 +44,18 @@ class PremiumUsersDAO(BaseDAO[PremiumUsers]):
                 PremiumUsers.username,
                 PremiumUsers.subscription_date,
                 PremiumUsers.subscription_days,
-                PremiumUsers.bonus_days
+                PremiumUsers.bonus_days,
             )
         )
-        dict_keys = ['user_id', 'tariff_plan', 'name', 'username', 'subscription_date', 'subscription_days', 'bonus_days']
+        dict_keys = [
+            "user_id",
+            "tariff_plan",
+            "name",
+            "username",
+            "subscription_date",
+            "subscription_days",
+            "bonus_days",
+        ]
         return [dict(zip(dict_keys, row)) for row in result.fetchall()]
 
     async def premium_user_exists(self, user_id: int) -> bool:

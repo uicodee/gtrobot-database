@@ -11,6 +11,8 @@ class CoursePlaceholdersDAO(BaseDAO[CoursePlaceholders]):
 
     async def get_kurs_placeholder_file_id(self, symbol: str) -> Optional[str]:
         result = await self.session.execute(
-            select(CoursePlaceholders.file_id).where(CoursePlaceholders.symbol == symbol)
+            select(CoursePlaceholders.file_id).where(
+                CoursePlaceholders.symbol == symbol
+            )
         )
         return result.scalar()

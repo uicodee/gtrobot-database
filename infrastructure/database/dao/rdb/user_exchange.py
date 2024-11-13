@@ -15,14 +15,20 @@ class UsersExchangeDAO(BaseDAO[UsersExchange]):
         )
         return result.scalar()
 
-    async def get_exchange_daily_user_buy_usdt_date(self, user_id: int) -> Optional[str]:
+    async def get_exchange_daily_user_buy_usdt_date(
+        self, user_id: int
+    ) -> Optional[str]:
         result = await self.session.execute(
-            select(UsersExchange.user_buy_usdt_date).where(UsersExchange.user_id == user_id)
+            select(UsersExchange.user_buy_usdt_date).where(
+                UsersExchange.user_id == user_id
+            )
         )
         return result.scalar()
 
     async def get_user_request_number(self, user_id: int) -> Optional[int]:
         result = await self.session.execute(
-            select(UsersExchange.user_request_number).where(UsersExchange.user_id == user_id)
+            select(UsersExchange.user_request_number).where(
+                UsersExchange.user_id == user_id
+            )
         )
         return result.scalar()

@@ -17,6 +17,6 @@ class AdminSettings(BaseModel):
     quiz_mailing_text: Mapped[str] = mapped_column(
         Text,
         default="15 va undan yuqori bal yig’ganlarga yangi "
-                "Trading Community ga imtiyoz bilan qoshilish imkoni beriladi."
-                "\n\n<b>Batafsil malumot:</b> @Granduzb",
+        "Trading Community ga imtiyoz bilan qoshilish imkoni beriladi."
+        "\n\n<b>Batafsil malumot:</b> @Granduzb",
     )

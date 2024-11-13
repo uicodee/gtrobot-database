@@ -17,9 +17,16 @@ class ReplyMessagesDAO(BaseDAO[ReplyMessages]):
                 ReplyMessages.original_message_id,
                 ReplyMessages.copy_message_id,
                 ReplyMessages.reply_date,
-                ReplyMessages.is_admin_reply
+                ReplyMessages.is_admin_reply,
             ).where(ReplyMessages.copy_message_id == copy_message_id)
         )
-        dict_keys = ['id', 'user_id', 'original_message_id', 'copy_message_id', 'reply_date', 'is_admin_reply']
+        dict_keys = [
+            "id",
+            "user_id",
+            "original_message_id",
+            "copy_message_id",
+            "reply_date",
+            "is_admin_reply",
+        ]
         data = result.fetchone()
         return dict(zip(dict_keys, data)) if data else {}
