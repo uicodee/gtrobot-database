@@ -104,4 +104,14 @@ class SignalsDAO(BaseDAO[SignalsUsers]):
         )
         await self.session.commit()
 
+    async def del_user_signal_pair(self, user_id: int, pair: str):
+        await self.session.execute(
+            delete(Pairs).where(Pairs.user_id == user_id, Pairs.pair == pair)
+        )
+        await self.session.commit()
 
+    async def del_all_xauusd_signals(self):
+        await self.session.execute(
+            delete(XAUUSDSignals)
+        )
+        await self.session.commit()
