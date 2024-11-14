@@ -1,6 +1,7 @@
+import time
 from typing import List, Dict
 
-from sqlalchemy import select
+from sqlalchemy import select, update, insert, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from infrastructure.database.dao.rdb import BaseDAO
@@ -73,3 +74,34 @@ class SignalsDAO(BaseDAO[SignalsUsers]):
             select(SignalsUsers.is_active).where(SignalsUsers.user_id == user_id)
         )
         return bool(result.scalar())
+
+    async def update_user_signal_active_status(self, user_id, is_active) -> None:
+        await self.session.execute(
+            update(SignalsUsers)
+            .where(SignalsUsers.user_id == user_id)
+            .values(is_active=is_active)
+        )
+        await self.session.commit()
+
+    async def set_user_signal_profile(self, user_id):
+        await self.session.execute(
+            insert(SignalsUsers).values(user_id=user_id)
+        )
+        await self.session.commit()
+
+    async def set_user_signal_data(self, user_id, pair, timeframes):
+        await self.session.execute(
+            insert(Pairs).values(user_id=user_id, pair=pair, timeframe=timeframes)
+        )
+        await self.session.commit()
+
+    async def set_xauusd_signal(self, signal_type, price, is_entry, timestamp: int = None):
+        if timestamp is None:
+            timestamp = int(time.time())
+
+        await self.session.execute(
+            insert(XAUUSDSignals).values(type=signal_type, price=price, is_entry=is_entry, timestamp=timestamp)
+        )
+        await self.session.commit()
+
+
