@@ -1,5 +1,5 @@
 from typing import List, Dict, Optional
-from sqlalchemy import select
+from sqlalchemy import select, update, insert, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from infrastructure.database.dao.rdb import BaseDAO
 from infrastructure.database.models import P2PUsers, P2PPairs, P2PPairsExchange, AutoDeleteMessage
