@@ -52,6 +52,7 @@ class KlinesDAO(BaseDAO[KlinesUsers]):
             .where(KlinesUsers.user_id == user_id)
             .values(short_value=value)
         )
+        await self.session.commit()
 
     async def update_klines_user_long_value(self, user_id, value):
         await self.session.execute(
@@ -59,6 +60,7 @@ class KlinesDAO(BaseDAO[KlinesUsers]):
             .where(KlinesUsers.user_id == user_id)
             .values(long_value=value)
         )
+        await self.session.commit()
 
     async def update_klines_user_status(self, user_id, is_active):
         await self.session.execute(
@@ -66,18 +68,22 @@ class KlinesDAO(BaseDAO[KlinesUsers]):
             .where(KlinesUsers.user_id == user_id)
             .values(is_active=is_active)
         )
+        await self.session.commit()
 
     async def set_klines_user_data(self, user_id):
         await self.session.execute(
             insert(KlinesUsers).values(user_id=user_id)
         )
+        await self.session.commit()
 
     async def set_user_klines_pair(self, user_id, pair, bid_value, sale_value):
         await self.session.execute(
             insert(KlinesPairs).values(user_id=user_id, pair=pair, bid_value=bid_value, sale_value=sale_value)
         )
+        await self.session.commit()
 
     async def del_user_klines_pair(self, user_id, pair):
         await self.session.execute(
             delete(KlinesPairs).where(KlinesPairs.user_id == user_id, KlinesPairs.pair == pair)
         )
+        await self.session.commit()

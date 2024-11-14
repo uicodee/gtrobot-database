@@ -209,6 +209,7 @@ class FarmingDAO(BaseDAO[Accounts]):
             .where(Accounts.id == account_id, Accounts.user_id == user_id)
             .values(is_active=is_active)
         )
+        await self.session.commit()
 
     async def update_account(self, account_id: int, user_id: int, referral_token: str,
                              account_name: str, access_token: str, refresh_token: str = None,
@@ -229,6 +230,7 @@ class FarmingDAO(BaseDAO[Accounts]):
                 date=date,
             )
         )
+        await self.session.commit()
 
     async def insert_account(self, user_id: int, referral_token: str, account_name: str,
                              access_token: str, bot_name: str, refresh_token: str = None,
@@ -249,6 +251,7 @@ class FarmingDAO(BaseDAO[Accounts]):
                 date=date,
             )
         )
+        await self.session.commit()
 
         return result.lastrowid
 
@@ -272,6 +275,7 @@ class FarmingDAO(BaseDAO[Accounts]):
                 date=date,
             )
         )
+        await self.session.commit()
 
         return result.lastrowid
 
@@ -292,6 +296,7 @@ class FarmingDAO(BaseDAO[Accounts]):
                 date=date,
             )
         )
+        await self.session.commit()
 
     async def insert_blum_account_statistic(self, account_id: int, available_balance: float, play_passes: int,
                                             earnings_rate: float, limit_invitation: int, used_invitation: int,
@@ -311,6 +316,7 @@ class FarmingDAO(BaseDAO[Accounts]):
                 date=date,
             )
         )
+        await self.session.commit()
 
         return result.lastrowid
 
@@ -341,6 +347,7 @@ class FarmingDAO(BaseDAO[Accounts]):
                 date=date,
             )
         )
+        await self.session.commit()
 
         return result.lastrowid
 
@@ -365,6 +372,7 @@ class FarmingDAO(BaseDAO[Accounts]):
                 is_premium=is_premium,
             )
         )
+        await self.session.commit()
 
         return result.lastrowid
 

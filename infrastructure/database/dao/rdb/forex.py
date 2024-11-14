@@ -165,6 +165,7 @@ class ForexDAO(BaseDAO[ForexUsers]):
             .where(ForexUsers.user_id == user_id)
             .values(is_active=is_active)
         )
+        await self.session.commit()
 
     async def update_forex_user_api(self, user_id: int, user_login: int, user_password: str, user_server: str):
         await self.session.execute(
@@ -176,11 +177,13 @@ class ForexDAO(BaseDAO[ForexUsers]):
                 user_server=user_server,
             )
         )
+        await self.session.commit()
 
     async def set_forex_user(self, user_id: int, is_active: bool = True):
         await self.session.execute(
             insert(ForexUsers).values(user_id=user_id, is_active=is_active)
         )
+        await self.session.commit()
 
     async def set_forex_user_api(self, user_id: int, user_login: int, user_password: str, user_server: str):
         await self.session.execute(
@@ -191,6 +194,7 @@ class ForexDAO(BaseDAO[ForexUsers]):
                 user_server=user_server,
             )
         )
+        await self.session.commit()
 
     async def set_forex_user_order(self, user_id: int, order_type: str, order_symbol: str, order_volume: float,
                                    order_tp_price: float, order_sl_price: float, order_price: float, signal_id: int,
@@ -212,6 +216,7 @@ class ForexDAO(BaseDAO[ForexUsers]):
                 order_date=order_date,
             )
         )
+        await self.session.commit()
 
     async def set_forex_signal(self, symbol: str, signal_type: str, price: float, parent_signal_id: int, timestamp: int = None):
         if timestamp is None:
@@ -226,6 +231,7 @@ class ForexDAO(BaseDAO[ForexUsers]):
                 timestamp=timestamp,
             )
         )
+        await self.session.commit()
 
         return result.lastrowid
 
@@ -233,3 +239,4 @@ class ForexDAO(BaseDAO[ForexUsers]):
         await self.session.execute(
             delete(UsersForexAPI).where(UsersForexAPI.user_id == user_id)
         )
+        await self.session.commit()

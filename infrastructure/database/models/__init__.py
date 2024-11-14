@@ -125,6 +125,6 @@ from .video_types import VideoTypes
 from .videos import Videos
 
 # 3 tables (bid and sales)
-from .symbols import Symbols
-from .user_symbols import UserSymbols
-from .sale_users import SaleUsers
+from .bid_and_sale_symbols import BidAndSaleSymbols
+from .bid_and_sale_user_symbols import BidAndSaleUserSymbols
+from .bid_and_sale_sale_users import BidAndSaleUsers

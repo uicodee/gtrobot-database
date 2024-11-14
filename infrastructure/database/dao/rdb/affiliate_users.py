@@ -135,6 +135,7 @@ class AffiliateUsersDAO(BaseDAO[AffiliateUsers]):
             .where(AffiliateUsersWithdraw.id == withdraw_id)
             .values(is_confirmed=status)
         )
+        await self.session.commit()
 
     async def update_affiliate_user_usdt_balances(self, user_id, usdt_bonus):
         await self.session.execute(
@@ -142,6 +143,7 @@ class AffiliateUsersDAO(BaseDAO[AffiliateUsers]):
             .where(AffiliateUsers.user_id == user_id)
             .values(usdt_balance=AffiliateUsers.usdt_balance + usdt_bonus)
         )
+        await self.session.commit()
 
     async def update_affiliate_user_status(self, user_id, is_active):
         await self.session.execute(
@@ -149,6 +151,7 @@ class AffiliateUsersDAO(BaseDAO[AffiliateUsers]):
             .where(AffiliateUsers.user_id == user_id)
             .values(is_active=is_active)
         )
+        await self.session.commit()
 
     async def set_affiliate_user(self, user_id: int, user_name: str, user_last_name: str, user_number: str):
         await self.session.execute(
@@ -159,6 +162,7 @@ class AffiliateUsersDAO(BaseDAO[AffiliateUsers]):
                 user_number=user_number,
             )
         )
+        await self.session.commit()
 
     async def set_new_affiliate_user_income(self, user_id: int, user_earnings: int, promo_code: str, buyer_id: int):
         await self.session.execute(
@@ -169,6 +173,7 @@ class AffiliateUsersDAO(BaseDAO[AffiliateUsers]):
                 buyer_id=buyer_id,
             )
         )
+        await self.session.commit()
 
     async def set_new_affiliate_user_withdraw(self, user_id: int, user_sum: int, wallet_address: str):
         result = await self.session.execute(
@@ -178,6 +183,7 @@ class AffiliateUsersDAO(BaseDAO[AffiliateUsers]):
                 wallet_address=wallet_address,
             )
         )
+        await self.session.commit()
 
         return result.lastrowid
 
