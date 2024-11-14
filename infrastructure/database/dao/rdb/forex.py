@@ -1,5 +1,6 @@
+import time
 from typing import List, Dict, Optional
-from sqlalchemy import select
+from sqlalchemy import select, update, insert, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from infrastructure.database.dao.rdb import BaseDAO
 from infrastructure.database.models import (
@@ -157,3 +158,78 @@ class ForexDAO(BaseDAO[ForexUsers]):
             )
         )
         return result.fetchone() is not None
+
+    async def update_forex_user_status(self, user_id: int, is_active: bool):
+        await self.session.execute(
+            update(ForexUsers)
+            .where(ForexUsers.user_id == user_id)
+            .values(is_active=is_active)
+        )
+
+    async def update_forex_user_api(self, user_id: int, user_login: int, user_password: str, user_server: str):
+        await self.session.execute(
+            update(UsersForexAPI)
+            .where(UsersForexAPI.user_id == user_id)
+            .values(
+                user_login=user_login,
+                user_password=user_password,
+                user_server=user_server,
+            )
+        )
+
+    async def set_forex_user(self, user_id: int, is_active: bool = True):
+        await self.session.execute(
+            insert(ForexUsers).values(user_id=user_id, is_active=is_active)
+        )
+
+    async def set_forex_user_api(self, user_id: int, user_login: int, user_password: str, user_server: str):
+        await self.session.execute(
+            insert(UsersForexAPI).values(
+                user_id=user_id,
+                user_login=user_login,
+                user_password=user_password,
+                user_server=user_server,
+            )
+        )
+
+    async def set_forex_user_order(self, user_id: int, order_type: str, order_symbol: str, order_volume: float,
+                                   order_tp_price: float, order_sl_price: float, order_price: float, signal_id: int,
+                                   order_ticket: int, order_date: int = None):
+        if order_date is None:
+            order_date = int(time.time())
+
+        await self.session.execute(
+            insert(ForexUsersOrderHistory).values(
+                user_id=user_id,
+                order_type=order_type,
+                order_symbol=order_symbol,
+                order_volume=order_volume,
+                order_tp_price=order_tp_price,
+                order_sl_price=order_sl_price,
+                order_price=order_price,
+                signal_id=signal_id,
+                order_ticket=order_ticket,
+                order_date=order_date,
+            )
+        )
+
+    async def set_forex_signal(self, symbol: str, signal_type: str, price: float, parent_signal_id: int, timestamp: int = None):
+        if timestamp is None:
+            timestamp = int(time.time())
+
+        result = await self.session.execute(
+            insert(ForexSignals).values(
+                symbol=symbol,
+                type=signal_type,
+                price=price,
+                parent_signal_id=parent_signal_id,
+                timestamp=timestamp,
+            )
+        )
+
+        return result.lastrowid
+
+    async def del_user_forex_api(self, user_id: int):
+        await self.session.execute(
+            delete(UsersForexAPI).where(UsersForexAPI.user_id == user_id)
+        )

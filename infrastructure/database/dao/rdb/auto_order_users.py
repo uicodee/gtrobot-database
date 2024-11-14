@@ -1,6 +1,6 @@
 from typing import List
 
-from sqlalchemy import select
+from sqlalchemy import select, update, insert, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from infrastructure.database.dao.rdb import BaseDAO
@@ -290,3 +290,187 @@ class AutoOrderUsersDAO(BaseDAO[AutoOrderUsers]):
                 current_count = 0
 
         return max_nonprofit_count
+
+    async def update_auto_order_trading_ban_status(self, user_id, trading_ban_status):
+        await self.session.execute(
+            update(AutoOrderUsers)
+            .where(AutoOrderUsers.user_id == user_id)
+            .values(is_trading_ban=trading_ban_status)
+        )
+
+    async def update_auto_order_user_order_status(self, user_id, position_id, order_time, order_status):
+        await self.session.execute(
+            update(AutoOrderUsersOrders)
+            .where(AutoOrderUsersOrders.user_id == user_id)
+            .where(AutoOrderUsersOrders.position_id == position_id)
+            .where(AutoOrderUsersOrders.order_time == order_time)
+            .values(order_status=order_status)
+        )
+
+    async def update_auto_order_user_active_status(self, user_id, is_active):
+        await self.session.execute(
+            update(AutoOrderUsers)
+            .where(AutoOrderUsers.user_id == user_id)
+            .values(is_active=is_active)
+        )
+
+    async def update_auto_order_user_leaderboard_new_profile_status(self, encrypted_uid, is_new_profile=False):
+        await self.session.execute(
+            update(LeaderboardUsers)
+            .where(LeaderboardUsers.encrypted_uid == encrypted_uid)
+            .values(is_new_profile=is_new_profile)
+        )
+
+    async def update_auto_order_user_api_data(self, user_id, api_key, api_secret, user_exchange, api_passphrase=None):
+        await self.session.execute(
+            update(AutoOrderUsers)
+            .where(AutoOrderUsers.user_id == user_id)
+            .values(
+                api_key=api_key,
+                api_secret=api_secret,
+                user_exchange=user_exchange,
+                api_passphrase=api_passphrase,
+                is_active=True,
+            )
+        )
+
+    async def update_auto_order_leaderboard_position(self, encrypted_uid, entry_price, mark_price, update_time_stamp):
+        await self.session.execute(
+            update(Positions)
+            .where(Positions.encrypted_uid == encrypted_uid)
+            .where(Positions.entry_price == entry_price)
+            .where(Positions.update_time_stamp == update_time_stamp)
+            .values(mark_price=mark_price)
+        )
+
+    async def update_auto_order_leaderboard_position_posted_status(self, position_id):
+        await self.session.execute(
+            update(Positions)
+            .where(Positions.id == position_id)
+            .values(is_posted=True)
+        )
+
+    async def update_auto_order_leaderboard_position_closed_status(self, user_id, position_id, order_id):
+        await self.session.execute(
+            update(AutoOrderUsersOrders)
+            .where(AutoOrderUsersOrders.user_id == user_id)
+            .where(AutoOrderUsersOrders.position_id == position_id)
+            .where(AutoOrderUsersOrders.order_id == order_id)
+            .values(is_closed=True)
+        )
+
+    async def add_auto_order_leaderboard_position(self, encrypted_uid, amount, symbol, entry_price,
+                                                  mark_price, leverage, update_time_stamp):
+        result = await self.session.execute(
+            insert(Positions)
+            .values(
+                encrypted_uid=encrypted_uid,
+                amount=amount,
+                symbol=symbol,
+                entry_price=entry_price,
+                mark_price=mark_price,
+                leverage=leverage,
+                update_time_stamp=update_time_stamp,
+            )
+        )
+
+        return result.lastrowid
+
+    async def set_auto_order_user_data(self, user_id, api_key, api_secret, user_exchange, api_passphrase=None):
+        await self.session.execute(
+            insert(AutoOrderUsers).values(
+                user_id=user_id,
+                api_key=api_key,
+                api_secret=api_secret,
+                user_exchange=user_exchange,
+                api_passphrase=api_passphrase,
+            )
+        )
+
+    async def set_auto_order_leaderboard_order(self, position_id, user_id):
+        await self.session.execute(
+            insert(LeaderboardOrders).values(
+                position_id=position_id,
+                user_id=user_id,
+            )
+        )
+
+    async def set_auto_order_leaderboard_user(self, encrypted_uid, nick_name, user_id):
+        await self.session.execute(
+            insert(LeaderboardUsers).values(
+                encrypted_uid=encrypted_uid,
+                nick_name=nick_name,
+                user_id=user_id,
+            )
+        )
+
+    async def set_auto_order_user_order(self, user_name, symbol, entry_price, is_short, position_id,
+                                        user_id, order_id, order_time, order_amount, stop, take_profit,
+                                        leverage, is_spot_order, is_market, is_take_profit):
+        await self.session.execute(
+            insert(AutoOrderUsersOrders).values(
+                user_name=user_name,
+                symbol=symbol,
+                entry_price=entry_price,
+                is_short=is_short,
+                position_id=position_id,
+                user_id=user_id,
+                order_id=order_id,
+                order_time=order_time,
+                order_amount=order_amount,
+                stop=stop,
+                take_profit=take_profit,
+                leverage=leverage,
+                is_spot_order=is_spot_order,
+                is_market=is_market,
+                is_take_profit=is_take_profit,
+            )
+        )
+
+    async def set_auto_order_closed_leaderboard_order(self, position_id, user_id, amount, symbol,
+                                                      entry_price, mark_price, leverage):
+        await self.session.execute(
+            insert(ClosedLeaderboardOrders).values(
+                position_id=position_id,
+                user_id=user_id,
+                amount=amount,
+                symbol=symbol,
+                entry_price=entry_price,
+                mark_price=mark_price,
+                leverage=leverage,
+            )
+        )
+
+    async def del_auto_order_position(self, position_id):
+        await self.session.execute(
+            delete(Positions).where(Positions.id == position_id)
+        )
+
+    async def del_auto_order_user_order(self, user_id, position_id):
+        await self.session.execute(
+            delete(AutoOrderUsersOrders)
+            .where(AutoOrderUsersOrders.user_id == user_id)
+            .where(AutoOrderUsersOrders.position_id == position_id)
+        )
+
+    async def del_auto_order_leaderboard_user(self, encrypted_uid, creator_user_id):
+        await self.session.execute(
+            delete(LeaderboardUsers)
+            .where(LeaderboardUsers.encrypted_uid == encrypted_uid)
+            .where(LeaderboardUsers.user_id == creator_user_id)
+        )
+
+    async def del_new_order(self, order_id):
+        await self.session.execute(
+            delete(LeaderboardOrders).where(LeaderboardOrders.id == order_id)
+        )
+
+    async def del_closed_leaderboard_order(self, order_id):
+        await self.session.execute(
+            delete(ClosedLeaderboardOrders).where(ClosedLeaderboardOrders.id == order_id)
+        )
+
+    async def del_auto_order_user_history(self, user_id):
+        await self.session.execute(
+            delete(AutoOrderUsersOrders).where(AutoOrderUsersOrders.user_id == user_id)
+        )

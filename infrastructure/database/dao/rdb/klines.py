@@ -1,5 +1,5 @@
 from typing import List, Dict
-from sqlalchemy import select
+from sqlalchemy import select, update, insert, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from infrastructure.database.dao.rdb import BaseDAO
 from infrastructure.database.models import KlinesUsers, KlinesPairs
@@ -45,3 +45,39 @@ class KlinesDAO(BaseDAO[KlinesUsers]):
             select(KlinesUsers.is_active).where(KlinesUsers.user_id == user_id)
         )
         return bool(result.scalar())
+
+    async def update_klines_user_short_value(self, user_id, value):
+        await self.session.execute(
+            update(KlinesUsers)
+            .where(KlinesUsers.user_id == user_id)
+            .values(short_value=value)
+        )
+
+    async def update_klines_user_long_value(self, user_id, value):
+        await self.session.execute(
+            update(KlinesUsers)
+            .where(KlinesUsers.user_id == user_id)
+            .values(long_value=value)
+        )
+
+    async def update_klines_user_status(self, user_id, is_active):
+        await self.session.execute(
+            update(KlinesUsers)
+            .where(KlinesUsers.user_id == user_id)
+            .values(is_active=is_active)
+        )
+
+    async def set_klines_user_data(self, user_id):
+        await self.session.execute(
+            insert(KlinesUsers).values(user_id=user_id)
+        )
+
+    async def set_user_klines_pair(self, user_id, pair, bid_value, sale_value):
+        await self.session.execute(
+            insert(KlinesPairs).values(user_id=user_id, pair=pair, bid_value=bid_value, sale_value=sale_value)
+        )
+
+    async def del_user_klines_pair(self, user_id, pair):
+        await self.session.execute(
+            delete(KlinesPairs).where(KlinesPairs.user_id == user_id, KlinesPairs.pair == pair)
+        )

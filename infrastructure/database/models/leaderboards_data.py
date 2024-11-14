@@ -10,7 +10,7 @@ class LeaderboardsData(BaseModel):
         Integer, ForeignKey("leaderboard_ids.id")
     )
     position: Mapped[int] = mapped_column(Integer)
-    id: Mapped[int] = mapped_column(Integer, ForeignKey("user_withdrawals.id"))
+    withdrawal_id: Mapped[int] = mapped_column(Integer, ForeignKey("user_withdrawals.id"))
     name: Mapped[str] = mapped_column(Text)
     earnings: Mapped[float] = mapped_column(Numeric)
     views: Mapped[int] = mapped_column(Integer)

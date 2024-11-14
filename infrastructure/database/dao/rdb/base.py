@@ -5,7 +5,7 @@ from sqlalchemy import delete, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm.strategy_options import Load
-from app.infrastructure.database.models import Base
+from infrastructure.database.models import Base
 
 Model = TypeVar("Model", Base, Base)
 

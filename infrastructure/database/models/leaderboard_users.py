@@ -11,3 +11,4 @@ class LeaderboardUsers(BaseModel):
     nick_name: Mapped[str] = mapped_column(String, default="No name")
     user_id: Mapped[str] = mapped_column(String)
     is_deleted: Mapped[bool] = mapped_column(Boolean, default=False)
+    is_new_profile: Mapped[bool] = mapped_column(Boolean, default=True)

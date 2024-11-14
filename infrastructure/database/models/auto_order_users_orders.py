@@ -23,3 +23,4 @@ class AutoOrderUsersOrders(BaseModel):
     is_market: Mapped[bool] = mapped_column(Boolean, default=True)
     is_take_profit: Mapped[bool] = mapped_column(Boolean, default=False)
     order_status: Mapped[str] = mapped_column(Text, default="new", nullable=False)
+    is_closed: Mapped[bool] = mapped_column(Boolean, default=False)

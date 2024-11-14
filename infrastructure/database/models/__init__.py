@@ -92,12 +92,13 @@ from .wallet_balances import WalletBalances
 from .wallet_info import WalletInfo
 from .wallet_tags import WalletTags
 
-# 5 tables
+# 6 tables
 from .accounts import Accounts
 from .blum_account_statistics import BlumAccountStatistics
 from .hamster_account_statistics import HamsterAccountStatistics
 from .hamster_upgrade_purchases import HamsterUpgradePurchases
 from .tapswap_account_statistics import TapswapAccountStatistics
+from .horizon_account_statistics import HorizonAccountStatistics
 
 # 22 tables (WinWin)
 from .banned_users import BannedUsers
