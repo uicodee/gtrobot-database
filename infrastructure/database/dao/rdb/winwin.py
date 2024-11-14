@@ -1,7 +1,8 @@
 import base64
+import time
 from datetime import datetime
 from typing import List, Dict, Tuple
-from sqlalchemy import select, func, case, and_, not_, text, join, desc
+from sqlalchemy import select, update, insert, delete, func, case, and_, not_, text, join, desc
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased
 
@@ -25,7 +26,7 @@ from dto.winwin import (
     Conf,
     Video,
     LeaderboardMe,
-    LeaderboardBoard,
+    LeaderboardBoard, AddUserVideo, UserPurchase,
 )
 from dto.winwin_admin import (
     TopEarningAccountsResponse,
@@ -56,7 +57,8 @@ from infrastructure.database.models import (
     PPSRewards,
     BannedUsers,
     LeaderboardsData,
-    LeaderboardIDs
+    LeaderboardIDs,
+    PlatformVideoIDs, LeaderboardPositions, ReferralActivities
 )
 
 
@@ -89,13 +91,13 @@ class WinWinDAO(BaseDAO[WinWinUsers]):
     async def get_balances_sum(self) -> Dict[str, float]:
         transaction_ids = select(
             func.max(
-                case([(TransactionTypes.type_name == "cpm", TransactionTypes.id)])
+                case((TransactionTypes.type_name == "cpm", TransactionTypes.id))
             ),
             func.max(
-                case([(TransactionTypes.type_name == "pps", TransactionTypes.id)])
+                case((TransactionTypes.type_name == "pps", TransactionTypes.id))
             ),
             func.max(
-                case([(TransactionTypes.type_name == "ppc", TransactionTypes.id)])
+                case((TransactionTypes.type_name == "ppc", TransactionTypes.id))
             ),
         ).subquery()
 
@@ -103,34 +105,34 @@ class WinWinDAO(BaseDAO[WinWinUsers]):
             select(
                 func.sum(
                     case(
-                        [
+                        (
                             (
                                 UserTransactions.type_id == transaction_ids.c[0],
                                 UserTransactions.amount,
                             )
-                        ],
+                        ),
                         else_=0,
                     )
                 ).label("cpm"),
                 func.sum(
                     case(
-                        [
+                        (
                             (
                                 UserTransactions.type_id == transaction_ids.c[1],
                                 UserTransactions.amount,
                             )
-                        ],
+                        ),
                         else_=0,
                     )
                 ).label("pps"),
                 func.sum(
                     case(
-                        [
+                        (
                             (
                                 UserTransactions.type_id == transaction_ids.c[2],
                                 UserTransactions.amount,
                             )
-                        ],
+                        ),
                         else_=0,
                     )
                 ).label("ppc"),
@@ -146,13 +148,13 @@ class WinWinDAO(BaseDAO[WinWinUsers]):
 
         transaction_ids = select(
             func.max(
-                case([(TransactionTypes.type_name == "cpm", TransactionTypes.id)])
+                case((TransactionTypes.type_name == "cpm", TransactionTypes.id))
             ),
             func.max(
-                case([(TransactionTypes.type_name == "pps", TransactionTypes.id)])
+                case((TransactionTypes.type_name == "pps", TransactionTypes.id))
             ),
             func.max(
-                case([(TransactionTypes.type_name == "ppc", TransactionTypes.id)])
+                case((TransactionTypes.type_name == "ppc", TransactionTypes.id))
             ),
         ).subquery()
 
@@ -161,40 +163,40 @@ class WinWinDAO(BaseDAO[WinWinUsers]):
                 UserTransactions.user_id,
                 func.sum(
                     case(
-                        [
+                        (
                             (
                                 UserTransactions.type_id == transaction_ids.c[0],
                                 UserTransactions.amount,
                             )
-                        ],
+                        ),
                         else_=0,
                     )
                 ).label("cpm"),
                 func.sum(
                     case(
-                        [
+                        (
                             (
                                 UserTransactions.type_id == transaction_ids.c[1],
                                 UserTransactions.amount,
                             )
-                        ],
+                        ),
                         else_=0,
                     )
                 ).label("pps"),
                 func.sum(
                     case(
-                        [
+                        (
                             (
                                 UserTransactions.type_id == transaction_ids.c[2],
                                 UserTransactions.amount,
                             )
-                        ],
+                        ),
                         else_=0,
                     )
                 ).label("ppc"),
                 func.sum(
                     case(
-                        [(UserTransactions.amount > 0, UserTransactions.amount)],
+                        (UserTransactions.amount > 0, UserTransactions.amount),
                         else_=0,
                     )
                 ).label("total_amount"),
@@ -306,22 +308,22 @@ class WinWinDAO(BaseDAO[WinWinUsers]):
 
         transaction_ids = select(
             func.max(
-                case([(TransactionTypes.type_name == "cpm", TransactionTypes.id)])
+                case((TransactionTypes.type_name == "cpm", TransactionTypes.id))
             ),
             func.max(
-                case([(TransactionTypes.type_name == "pps", TransactionTypes.id)])
+                case((TransactionTypes.type_name == "pps", TransactionTypes.id))
             ),
             func.max(
-                case([(TransactionTypes.type_name == "ppc", TransactionTypes.id)])
+                case((TransactionTypes.type_name == "ppc", TransactionTypes.id))
             ),
             func.max(
                 case(
-                    [
+                    (
                         (
                             TransactionTypes.type_name == "canceled_withdraw",
                             TransactionTypes.id,
                         )
-                    ]
+                    )
                 )
             ),
         ).subquery()
@@ -330,45 +332,45 @@ class WinWinDAO(BaseDAO[WinWinUsers]):
             select(
                 func.sum(
                     case(
-                        [
+                        (
                             (
                                 UserTransactions.type_id == transaction_ids.c[0],
                                 UserTransactions.amount,
                             )
-                        ],
+                        ),
                         else_=0,
                     )
                 ).label("cpm"),
                 func.sum(
                     case(
-                        [
+                        (
                             (
                                 UserTransactions.type_id == transaction_ids.c[1],
                                 UserTransactions.amount,
                             )
-                        ],
+                        ),
                         else_=0,
                     )
                 ).label("pps"),
                 func.sum(
                     case(
-                        [
+                        (
                             (
                                 UserTransactions.type_id == transaction_ids.c[2],
                                 UserTransactions.amount,
                             )
-                        ],
+                        ),
                         else_=0,
                     )
                 ).label("ppc"),
                 func.sum(
                     case(
-                        [
+                        (
                             (
                                 UserTransactions.type_id == transaction_ids.c[3],
                                 UserTransactions.amount,
                             )
-                        ],
+                        ),
                         else_=0,
                     )
                 ).label("canceled_withdraw"),
@@ -805,3 +807,210 @@ class WinWinDAO(BaseDAO[WinWinUsers]):
         query = select(1).where(BannedUsers.user_id == user_id)
         result = await self.session.execute(query)
         return result.scalar() is not None
+
+    async def stop_video(self, video_id: int, created_at: int = None) -> None:
+        if not created_at:
+            created_at = int(time.time())
+
+        query = (
+            update(UserVideos)
+            .where(UserVideos.id == video_id)
+            .values(stopped_at=created_at)
+        )
+        await self.session.execute(query)
+        await self.session.commit()
+
+    async def moderate_video(self, video_id: int, moderated_at: int = None, is_accepted: bool = False) -> None:
+        if not moderated_at:
+            moderated_at = int(time.time())
+
+        query = (
+            update(UserVideos)
+            .where(UserVideos.id == video_id)
+            .values(moderated_at=moderated_at, is_accepted=is_accepted)
+        )
+        await self.session.execute(query)
+        await self.session.commit()
+
+    async def moderate_withdrawal(self, withdrawal_id: int, moderated_at: int = None, is_accepted: bool = False) -> None:
+        if not moderated_at:
+            moderated_at = int(time.time())
+
+        query = (
+            update(UserWithdrawals)
+            .where(UserWithdrawals.id == withdrawal_id)
+            .values(moderated_at=moderated_at, is_accepted=is_accepted)
+        )
+        await self.session.execute(query)
+        await self.session.commit()
+
+    async def add_user(self, user: UserRoot) -> None:
+        stmt = insert(WinWinUsers).values(
+            id=user.id,
+            name=user.name,
+            phone_number=user.phone_number,
+            created_at=user.created_at
+        )
+        await self.session.execute(stmt)
+        await self.session.commit()
+
+    async def add_user_video(self, user_video: AddUserVideo) -> None:
+        stmt_user_video = insert(UserVideos).values(
+            user_id=user_video.user_id,
+            video_id=user_video.video_id,
+            video_type_id=user_video.video_type_id,
+            created_at=user_video.created_at
+        )
+
+        async with self.session.begin():
+            result = await self.session.execute(stmt_user_video)
+            video_id = result.inserted_primary_key[0]
+
+            if user_video.unique_video_id:
+                stmt_platform_video_id = insert(PlatformVideoIDs).values(
+                    user_video_id=video_id,
+                    video_id=user_video.unique_video_id
+                )
+                await self.session.execute(stmt_platform_video_id)
+            await self.session.commit()
+
+    async def add_video(self, video: Video) -> None:
+        stmt = insert(Videos).values(
+            video_id=video.video_id,
+            title=video.title,
+            thumbnail=video.thumbnail,
+            duration=video.duration,
+            video_url=video.video_url,
+            view_count=video.view_count,
+            like_count=video.like_count,
+            comment_count=video.comment_count,
+            current_cpm_level=video.current_cpm_level,
+            new_views=video.new_views,
+            created_at=video.created_at,
+            transaction_id=video.transaction_id
+        )
+        await self.session.execute(stmt)
+        await self.session.commit()
+
+    async def add_videos(self, videos: List[Video]) -> None:
+        data = [(video.video_id, video.title, video.thumbnail, video.duration, video.video_url,
+                 video.view_count, video.like_count, video.comment_count, video.current_cpm_level,
+                 video.new_views, video.created_at, video.transaction_id) for video in videos]
+        stmt = insert(Videos).values(
+            video_id=data[0], title=data[1], thumbnail=data[2], duration=data[3], video_url=data[4],
+            view_count=data[5], like_count=data[6], comment_count=data[7], current_cpm_level=data[8],
+            new_views=data[9], created_at=data[10], transaction_id=data[11]
+        )
+        await self.session.execute(stmt)
+        await self.session.commit()
+
+    async def add_sent_request(self, request: RootUnsentRequests) -> None:
+        stmt = insert(Requests).values(
+            source_id=request.source_id,
+            type=request.request_type,
+            created_at=request.created_at
+        )
+        await self.session.execute(stmt)
+        await self.session.commit()
+
+    async def add_user_transaction(self, user_id: int, transaction_type: str, amount: float, on_hold: int = 0) -> None:
+        transaction_type_id = await self.session.scalar(
+            select(TransactionTypes.id).where(TransactionTypes.type_name == transaction_type))
+
+        stmt = insert(UserTransactions).values(
+            user_id=user_id,
+            type_id=transaction_type_id,
+            amount=amount,
+            on_hold=on_hold
+        )
+        await self.session.execute(stmt)
+        await self.session.commit()
+
+    async def add_user_withdraw(self, user_withdraw: UserWithdraw) -> None:
+        stmt = insert(UserWithdrawals).values(
+            user_id=user_withdraw.user_id,
+            sum=user_withdraw.sum,
+            cryptocurrency=user_withdraw.cryptocurrency,
+            cryptocurrency_sum=user_withdraw.cryptocurrency_sum,
+            method=user_withdraw.method,
+            wallet_address=user_withdraw.wallet_address,
+            created_at=user_withdraw.created_at,
+            transaction_id=user_withdraw.transaction_id,
+            moderated_at=user_withdraw.moderated_at,
+            is_accepted=user_withdraw.is_accepted
+        )
+        await self.session.execute(stmt)
+        await self.session.commit()
+
+    async def add_user_purchase(self, user_purchase: UserPurchase) -> None:
+        stmt = insert(UserPurchases).values(
+            user_id=user_purchase.user_id,
+            purchase_id=user_purchase.purchase_id,
+            purchase_sum=user_purchase.purchase_sum,
+            current_pps_level=user_purchase.current_pps_level,
+            transaction_id=user_purchase.transaction_id,
+            created_at=user_purchase.created_at
+        )
+        await self.session.execute(stmt)
+        await self.session.commit()
+
+    async def add_user_leaderboard_position(self, leaderboard_me: LeaderboardMe, method: str) -> None:
+        transaction_type_id = await self.session.scalar(
+            select(TransactionTypes.id).where(TransactionTypes.type_name == method))
+
+        stmt = insert(LeaderboardPositions).values(
+            user_id=leaderboard_me.id,
+            position=leaderboard_me.position,
+            method_id=transaction_type_id
+        )
+        await self.session.execute(stmt)
+        await self.session.commit()
+
+    async def add_referral_activities(self, user_id: int, url: str, remote_addr: str) -> None:
+        stmt = insert(ReferralActivities).values(
+            user_id=user_id,
+            url=url,
+            remote_addr=remote_addr
+        )
+        await self.session.execute(stmt)
+        await self.session.commit()
+
+    async def add_referral(self, user_id: int, referral_user_id: int) -> None:
+        stmt = insert(UserReferrals).values(
+            user_id=user_id,
+            referral_user_id=referral_user_id
+        )
+        await self.session.execute(stmt)
+        await self.session.commit()
+
+    async def ban_user(self, user_id: int, ban_reason: str = None) -> None:
+        stmt = insert(BannedUsers).values(
+            user_id=user_id,
+            ban_reason=ban_reason
+        )
+        await self.session.execute(stmt)
+        await self.session.commit()
+
+    async def delete_video_info(self, video_id: int) -> None:
+        query = (
+            select(Videos.transaction_id)
+            .where(Videos.video_id == video_id)
+        )
+
+        async with self.session.begin():
+            try:
+                result = await self.session.execute(query)
+                transaction_ids = [row.transaction_id for row in result.fetchall()]
+
+                stmt_delete_video = delete(Videos).where(Videos.video_id == video_id)
+                await self.session.execute(stmt_delete_video)
+
+                if transaction_ids:
+                    stmt_delete_transactions = delete(UserTransactions).where(UserTransactions.id.in_(transaction_ids))
+                    await self.session.execute(stmt_delete_transactions)
+
+                await self.session.commit()
+
+            except Exception as e:
+                await self.session.rollback()
+                raise e
