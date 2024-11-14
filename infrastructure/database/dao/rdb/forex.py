@@ -167,7 +167,9 @@ class ForexDAO(BaseDAO[ForexUsers]):
         )
         await self.session.commit()
 
-    async def update_forex_user_api(self, user_id: int, user_login: int, user_password: str, user_server: str):
+    async def update_forex_user_api(
+        self, user_id: int, user_login: int, user_password: str, user_server: str
+    ):
         await self.session.execute(
             update(UsersForexAPI)
             .where(UsersForexAPI.user_id == user_id)
@@ -185,7 +187,9 @@ class ForexDAO(BaseDAO[ForexUsers]):
         )
         await self.session.commit()
 
-    async def set_forex_user_api(self, user_id: int, user_login: int, user_password: str, user_server: str):
+    async def set_forex_user_api(
+        self, user_id: int, user_login: int, user_password: str, user_server: str
+    ):
         await self.session.execute(
             insert(UsersForexAPI).values(
                 user_id=user_id,
@@ -196,9 +200,19 @@ class ForexDAO(BaseDAO[ForexUsers]):
         )
         await self.session.commit()
 
-    async def set_forex_user_order(self, user_id: int, order_type: str, order_symbol: str, order_volume: float,
-                                   order_tp_price: float, order_sl_price: float, order_price: float, signal_id: int,
-                                   order_ticket: int, order_date: int = None):
+    async def set_forex_user_order(
+        self,
+        user_id: int,
+        order_type: str,
+        order_symbol: str,
+        order_volume: float,
+        order_tp_price: float,
+        order_sl_price: float,
+        order_price: float,
+        signal_id: int,
+        order_ticket: int,
+        order_date: int = None,
+    ):
         if order_date is None:
             order_date = int(time.time())
 
@@ -218,7 +232,14 @@ class ForexDAO(BaseDAO[ForexUsers]):
         )
         await self.session.commit()
 
-    async def set_forex_signal(self, symbol: str, signal_type: str, price: float, parent_signal_id: int, timestamp: int = None):
+    async def set_forex_signal(
+        self,
+        symbol: str,
+        signal_type: str,
+        price: float,
+        parent_signal_id: int,
+        timestamp: int = None,
+    ):
         if timestamp is None:
             timestamp = int(time.time())
 

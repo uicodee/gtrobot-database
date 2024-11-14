@@ -15,18 +15,19 @@ class KlinesDAO(BaseDAO[KlinesUsers]):
                 KlinesUsers.user_id,
                 KlinesPairs.bid_value,
                 KlinesPairs.sale_value,
-                KlinesPairs.pair
-            ).join(KlinesPairs, KlinesPairs.user_id == KlinesUsers.user_id)
+                KlinesPairs.pair,
+            )
+            .join(KlinesPairs, KlinesPairs.user_id == KlinesUsers.user_id)
             .where(KlinesUsers.is_active == 1, KlinesPairs.pair == pair)
         )
-        dict_keys = ['user_id', 'long_value', 'short_value', 'pair']
+        dict_keys = ["user_id", "long_value", "short_value", "pair"]
         return [dict(zip(dict_keys, row)) for row in result.fetchall()]
 
     async def get_active_klines_user_data(self) -> List[Dict[str, str]]:
         result = await self.session.execute(
             select(KlinesUsers.user_id).where(KlinesUsers.is_active == 1)
         )
-        return [{'user_id': str(row[0])} for row in result.fetchall()]
+        return [{"user_id": str(row[0])} for row in result.fetchall()]
 
     async def get_user_kline_pairs(self, user_id: int) -> List[str]:
         result = await self.session.execute(
@@ -71,19 +72,21 @@ class KlinesDAO(BaseDAO[KlinesUsers]):
         await self.session.commit()
 
     async def set_klines_user_data(self, user_id):
-        await self.session.execute(
-            insert(KlinesUsers).values(user_id=user_id)
-        )
+        await self.session.execute(insert(KlinesUsers).values(user_id=user_id))
         await self.session.commit()
 
     async def set_user_klines_pair(self, user_id, pair, bid_value, sale_value):
         await self.session.execute(
-            insert(KlinesPairs).values(user_id=user_id, pair=pair, bid_value=bid_value, sale_value=sale_value)
+            insert(KlinesPairs).values(
+                user_id=user_id, pair=pair, bid_value=bid_value, sale_value=sale_value
+            )
         )
         await self.session.commit()
 
     async def del_user_klines_pair(self, user_id, pair):
         await self.session.execute(
-            delete(KlinesPairs).where(KlinesPairs.user_id == user_id, KlinesPairs.pair == pair)
+            delete(KlinesPairs).where(
+                KlinesPairs.user_id == user_id, KlinesPairs.pair == pair
+            )
         )
         await self.session.commit()

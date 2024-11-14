@@ -153,7 +153,9 @@ class AffiliateUsersDAO(BaseDAO[AffiliateUsers]):
         )
         await self.session.commit()
 
-    async def set_affiliate_user(self, user_id: int, user_name: str, user_last_name: str, user_number: str):
+    async def set_affiliate_user(
+        self, user_id: int, user_name: str, user_last_name: str, user_number: str
+    ):
         await self.session.execute(
             insert(AffiliateUsers).values(
                 user_id=user_id,
@@ -164,7 +166,9 @@ class AffiliateUsersDAO(BaseDAO[AffiliateUsers]):
         )
         await self.session.commit()
 
-    async def set_new_affiliate_user_income(self, user_id: int, user_earnings: int, promo_code: str, buyer_id: int):
+    async def set_new_affiliate_user_income(
+        self, user_id: int, user_earnings: int, promo_code: str, buyer_id: int
+    ):
         await self.session.execute(
             insert(AffiliateUsersHistory).values(
                 user_id=user_id,
@@ -175,7 +179,9 @@ class AffiliateUsersDAO(BaseDAO[AffiliateUsers]):
         )
         await self.session.commit()
 
-    async def set_new_affiliate_user_withdraw(self, user_id: int, user_sum: int, wallet_address: str):
+    async def set_new_affiliate_user_withdraw(
+        self, user_id: int, user_sum: int, wallet_address: str
+    ):
         result = await self.session.execute(
             insert(AffiliateUsersWithdraw).values(
                 user_id=user_id,
@@ -186,4 +192,3 @@ class AffiliateUsersDAO(BaseDAO[AffiliateUsers]):
         await self.session.commit()
 
         return result.lastrowid
-
