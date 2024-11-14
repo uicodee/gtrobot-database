@@ -32,3 +32,14 @@ class AdminSettingsDAO(BaseDAO[AdminSettings]):
         )
         task_data = result.fetchone()
         return list(task_data) if task_data else []
+
+    async def update_soc_task(self, task_text, task_photo_id, task_group_id):
+        await self.session.execute(
+            AdminSettings.update()
+            .values(
+                task_text=task_text,
+                task_photo_id=task_photo_id,
+                task_group_id=task_group_id,
+            )
+        )
+        await self.session.commit()

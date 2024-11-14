@@ -1,5 +1,5 @@
 from typing import List, Optional
-from sqlalchemy import select
+from sqlalchemy import select, update, insert, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from infrastructure.database.dao.rdb import BaseDAO
 from infrastructure.database.models import Referrals
@@ -31,3 +31,15 @@ class ReferralsDAO(BaseDAO[Referrals]):
             select(Referrals.user_id).where(Referrals.referral_user_id == user_id)
         )
         return result.scalar()
+
+    async def set_user_referral_from_profile(self, user_id, referral_user_id, referral_username):
+        await self.session.execute(
+            insert(Referrals).values(
+                user_id=user_id,
+                referral_user_id=referral_user_id,
+                referral_username=referral_username,
+            )
+        )
+        await self.session.commit()
+
+    

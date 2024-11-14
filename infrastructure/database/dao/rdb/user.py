@@ -1,6 +1,6 @@
 from typing import Sequence, Optional
 
-from sqlalchemy import select, func
+from sqlalchemy import select, update, insert, delete, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from infrastructure.database.dao.rdb import BaseDAO
@@ -34,3 +34,28 @@ class UsersDAO(BaseDAO[User]):
     async def user_exists(self, user_id: int) -> bool:
         result = await self.session.execute(select(User).where(User.user_id == user_id))
         return result.fetchone() is not None
+
+    async def update_user_status(self, user_id, status):
+        await self.session.execute(
+            update(User).where(User.id == user_id).values(status=status)
+        )
+        await self.session.commit()
+
+    async def update_user_locale(self, user_id, locale):
+        await self.session.execute(
+            update(User).where(User.id == user_id).values(locale=locale)
+        )
+        await self.session.commit()
+
+    async def add_user(self, user_id):
+        await self.session.execute(
+            insert(User).values(id=user_id)
+        )
+        await self.session.commit()
+
+    async def set_status(self, user_id, status):
+        await self.session.execute(
+            update(User).where(User.id == user_id).values(status=status)
+        )
+        await self.session.commit()
+

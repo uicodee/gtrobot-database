@@ -1,6 +1,6 @@
 from typing import List
 
-from sqlalchemy import select
+from sqlalchemy import select, update, insert, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from infrastructure.database.dao.rdb import BaseDAO
@@ -63,3 +63,42 @@ class PremiumUsersDAO(BaseDAO[PremiumUsers]):
             select(PremiumUsers).where(PremiumUsers.user_id == user_id)
         )
         return result.fetchone() is not None
+
+    async def update_premium_user_bonus_days(self, user_id: int, bonus_days: int):
+        await self.session.execute(
+            update(PremiumUsers).where(PremiumUsers.user_id == user_id).values(bonus_days=bonus_days)
+        )
+        await self.session.commit()
+
+    async def update_premium_user_name(self, user_id: int, name: str, username: str):
+        await self.session.execute(
+            update(PremiumUsers)
+            .where(PremiumUsers.user_id == user_id)
+            .values(name=name, username=username)
+        )
+        await self.session.commit()
+
+    async def update_premium_subscription(self, user_id: int, subscription: str):
+        await self.session.execute(
+            update(PremiumUsers).where(PremiumUsers.user_id == user_id).values(subscription_date=subscription)
+        )
+        await self.session.commit()
+
+    async def set_premium_user(self, user_id, tariff_plan=None, subscription_date=None, name=None, username=None,
+                               subscription_days=10, bonus_days=0, is_demo_subscription=False):
+        await self.session.execute(
+            insert(PremiumUsers).values(
+                user_id=user_id,
+                tariff_plan=tariff_plan,
+                subscription_date=subscription_date,
+                name=name,
+                username=username,
+                subscription_days=subscription_days,
+                bonus_days=bonus_days,
+                is_demo_subscription=is_demo_subscription,
+            )
+        )
+
+    async def del_premium_user(self, user_id):
+        await self.session.execute(delete(PremiumUsers).where(PremiumUsers.user_id == user_id))
+        await self.session.commit()

@@ -1,5 +1,6 @@
+import time
 from typing import List
-from sqlalchemy import select
+from sqlalchemy import select, update, insert, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from infrastructure.database.dao.rdb import BaseDAO
 from infrastructure.database.models import ActivatedUserSections
@@ -25,3 +26,16 @@ class ActivatedUserSectionsDAO(BaseDAO[ActivatedUserSections]):
             )
         )
         return result.fetchone() is not None
+
+    async def set_activated_user_section(self, user_id: int, section: str, timestamp: int = None):
+        if timestamp is None:
+            timestamp = int(time.time())
+
+        await self.session.execute(
+            insert(ActivatedUserSections).values(
+                user_id=user_id, section=section, timestamp=timestamp
+            )
+        )
+
+
+

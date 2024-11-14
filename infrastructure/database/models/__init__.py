@@ -8,6 +8,7 @@ from .premium_users import PremiumUsers
 from .profiles import Profile
 from .referrals import Referrals
 from .quiz_results import QuizResults
+from .kurs_placeholders import KursPlaceholders
 from .reply_messages import ReplyMessages
 from .social_networks_links import SocialNetworksLinks
 from .subscription_orders import SubscriptionOrders

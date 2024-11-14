@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from sqlalchemy import select
+from sqlalchemy import select, update, insert, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from infrastructure.database.dao.rdb import BaseDAO
@@ -70,3 +70,52 @@ class ProfilesDAO(BaseDAO[Profile]):
             select(Profile).where(Profile.user_id == user_id)
         )
         return result.fetchone() is not None
+
+    async def update_user_request(self, user_id, is_request):
+        await self.session.execute(
+            update(Profile).where(Profile.user_id == user_id).values(is_request=is_request)
+        )
+        await self.session.commit()
+
+    async def update_user_rating(self, user_id, user_rating):
+        await self.session.execute(
+            update(Profile).where(Profile.user_id == user_id).values(user_rating=user_rating)
+        )
+        await self.session.commit()
+
+    async def update_user_balances(self, user_id, user_doge_balance, user_ton_balance, user_gtu_balance):
+        await self.session.execute(
+            update(Profile)
+            .where(Profile.user_id == user_id)
+            .values(
+                user_doge_balance=user_doge_balance,
+                user_ton_balance=user_ton_balance,
+                user_gtu_balance=user_gtu_balance,
+            )
+        )
+        await self.session.commit()
+
+    async def update_user_terms_of_use(self, user_id, terms_of_use):
+        await self.session.execute(
+            update(Profile).where(Profile.user_id == user_id).values(is_terms_of_use=terms_of_use)
+        )
+        await self.session.commit()
+
+    async def update_profile_task_link_data(self, user_id, invite_link_id, invite_link):
+        await self.session.execute(
+            update(Profile)
+            .where(Profile.user_id == user_id)
+            .values(invite_link_id=invite_link_id, invite_link=invite_link)
+        )
+        await self.session.commit()
+
+    async def set_user_profile(self, user_id, user_num, user_name, user_last_name):
+        await self.session.execute(
+            insert(Profile).values(
+                user_id=user_id,
+                user_num=user_num,
+                user_name=user_name,
+                user_last_name=user_last_name,
+            )
+        )
+        await self.session.commit()
