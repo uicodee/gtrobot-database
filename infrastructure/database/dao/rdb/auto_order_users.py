@@ -299,7 +299,9 @@ class AutoOrderUsersDAO(BaseDAO[AutoOrderUsers]):
         )
         await self.session.commit()
 
-    async def update_auto_order_user_order_status(self, user_id, position_id, order_time, order_status):
+    async def update_auto_order_user_order_status(
+        self, user_id, position_id, order_time, order_status
+    ):
         await self.session.execute(
             update(AutoOrderUsersOrders)
             .where(AutoOrderUsersOrders.user_id == user_id)
@@ -317,7 +319,9 @@ class AutoOrderUsersDAO(BaseDAO[AutoOrderUsers]):
         )
         await self.session.commit()
 
-    async def update_auto_order_user_leaderboard_new_profile_status(self, encrypted_uid, is_new_profile=False):
+    async def update_auto_order_user_leaderboard_new_profile_status(
+        self, encrypted_uid, is_new_profile=False
+    ):
         await self.session.execute(
             update(LeaderboardUsers)
             .where(LeaderboardUsers.encrypted_uid == encrypted_uid)
@@ -325,7 +329,9 @@ class AutoOrderUsersDAO(BaseDAO[AutoOrderUsers]):
         )
         await self.session.commit()
 
-    async def update_auto_order_user_api_data(self, user_id, api_key, api_secret, user_exchange, api_passphrase=None):
+    async def update_auto_order_user_api_data(
+        self, user_id, api_key, api_secret, user_exchange, api_passphrase=None
+    ):
         await self.session.execute(
             update(AutoOrderUsers)
             .where(AutoOrderUsers.user_id == user_id)
@@ -339,7 +345,9 @@ class AutoOrderUsersDAO(BaseDAO[AutoOrderUsers]):
         )
         await self.session.commit()
 
-    async def update_auto_order_leaderboard_position(self, encrypted_uid, entry_price, mark_price, update_time_stamp):
+    async def update_auto_order_leaderboard_position(
+        self, encrypted_uid, entry_price, mark_price, update_time_stamp
+    ):
         await self.session.execute(
             update(Positions)
             .where(Positions.encrypted_uid == encrypted_uid)
@@ -351,13 +359,13 @@ class AutoOrderUsersDAO(BaseDAO[AutoOrderUsers]):
 
     async def update_auto_order_leaderboard_position_posted_status(self, position_id):
         await self.session.execute(
-            update(Positions)
-            .where(Positions.id == position_id)
-            .values(is_posted=True)
+            update(Positions).where(Positions.id == position_id).values(is_posted=True)
         )
         await self.session.commit()
 
-    async def update_auto_order_leaderboard_position_closed_status(self, user_id, position_id, order_id):
+    async def update_auto_order_leaderboard_position_closed_status(
+        self, user_id, position_id, order_id
+    ):
         await self.session.execute(
             update(AutoOrderUsersOrders)
             .where(AutoOrderUsersOrders.user_id == user_id)
@@ -367,11 +375,18 @@ class AutoOrderUsersDAO(BaseDAO[AutoOrderUsers]):
         )
         await self.session.commit()
 
-    async def add_auto_order_leaderboard_position(self, encrypted_uid, amount, symbol, entry_price,
-                                                  mark_price, leverage, update_time_stamp):
+    async def add_auto_order_leaderboard_position(
+        self,
+        encrypted_uid,
+        amount,
+        symbol,
+        entry_price,
+        mark_price,
+        leverage,
+        update_time_stamp,
+    ):
         result = await self.session.execute(
-            insert(Positions)
-            .values(
+            insert(Positions).values(
                 encrypted_uid=encrypted_uid,
                 amount=amount,
                 symbol=symbol,
@@ -385,7 +400,9 @@ class AutoOrderUsersDAO(BaseDAO[AutoOrderUsers]):
 
         return result.lastrowid
 
-    async def set_auto_order_user_data(self, user_id, api_key, api_secret, user_exchange, api_passphrase=None):
+    async def set_auto_order_user_data(
+        self, user_id, api_key, api_secret, user_exchange, api_passphrase=None
+    ):
         await self.session.execute(
             insert(AutoOrderUsers).values(
                 user_id=user_id,
@@ -416,9 +433,24 @@ class AutoOrderUsersDAO(BaseDAO[AutoOrderUsers]):
         )
         await self.session.commit()
 
-    async def set_auto_order_user_order(self, user_name, symbol, entry_price, is_short, position_id,
-                                        user_id, order_id, order_time, order_amount, stop, take_profit,
-                                        leverage, is_spot_order, is_market, is_take_profit):
+    async def set_auto_order_user_order(
+        self,
+        user_name,
+        symbol,
+        entry_price,
+        is_short,
+        position_id,
+        user_id,
+        order_id,
+        order_time,
+        order_amount,
+        stop,
+        take_profit,
+        leverage,
+        is_spot_order,
+        is_market,
+        is_take_profit,
+    ):
         await self.session.execute(
             insert(AutoOrderUsersOrders).values(
                 user_name=user_name,
@@ -440,8 +472,9 @@ class AutoOrderUsersDAO(BaseDAO[AutoOrderUsers]):
         )
         await self.session.commit()
 
-    async def set_auto_order_closed_leaderboard_order(self, position_id, user_id, amount, symbol,
-                                                      entry_price, mark_price, leverage):
+    async def set_auto_order_closed_leaderboard_order(
+        self, position_id, user_id, amount, symbol, entry_price, mark_price, leverage
+    ):
         await self.session.execute(
             insert(ClosedLeaderboardOrders).values(
                 position_id=position_id,
@@ -456,9 +489,7 @@ class AutoOrderUsersDAO(BaseDAO[AutoOrderUsers]):
         await self.session.commit()
 
     async def del_auto_order_position(self, position_id):
-        await self.session.execute(
-            delete(Positions).where(Positions.id == position_id)
-        )
+        await self.session.execute(delete(Positions).where(Positions.id == position_id))
         await self.session.commit()
 
     async def del_auto_order_user_order(self, user_id, position_id):
@@ -485,7 +516,9 @@ class AutoOrderUsersDAO(BaseDAO[AutoOrderUsers]):
 
     async def del_closed_leaderboard_order(self, order_id):
         await self.session.execute(
-            delete(ClosedLeaderboardOrders).where(ClosedLeaderboardOrders.id == order_id)
+            delete(ClosedLeaderboardOrders).where(
+                ClosedLeaderboardOrders.id == order_id
+            )
         )
         await self.session.commit()
 

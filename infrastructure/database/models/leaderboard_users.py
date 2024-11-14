@@ -1,4 +1,4 @@
-from sqlalchemy import String, Boolean
+from sqlalchemy import String, Boolean, Integer, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .base import BaseModel
@@ -9,6 +9,7 @@ class LeaderboardUsers(BaseModel):
 
     encrypted_uid: Mapped[str] = mapped_column(String)
     nick_name: Mapped[str] = mapped_column(String, default="No name")
-    user_id: Mapped[str] = mapped_column(String)
-    is_deleted: Mapped[bool] = mapped_column(Boolean, default=False)
+    rank: Mapped[int] = mapped_column(Integer)
+    period_type: Mapped[str] = mapped_column(String, default="DAILY")
     is_new_profile: Mapped[bool] = mapped_column(Boolean, default=True)
+    is_active_user: Mapped[bool] = mapped_column(Boolean, default=True)
