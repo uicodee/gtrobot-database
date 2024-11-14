@@ -80,7 +80,7 @@ from .affiliate_users_withdraw import AffiliateUsersWithdraw
 from .positions import Positions
 from .position_users import PositionUsers
 
-# 10 tables
+# 11 tables
 from .follow import Follow
 from .personal_wallet_assets import PersonalWalletAssets
 from .stocks_balance import StocksBalance
@@ -91,6 +91,7 @@ from .wallet import Wallet
 from .wallet_balances import WalletBalances
 from .wallet_info import WalletInfo
 from .wallet_tags import WalletTags
+from .wallets_users import WalletsUsers
 
 # 6 tables
 from .accounts import Accounts
