@@ -16,7 +16,11 @@ class SignalsDAO(BaseDAO[SignalsUsers]):
         result = await self.session.execute(
             select(SignalsUsers.user_id)
             .join(Pairs, Pairs.user_id == SignalsUsers.user_id)
-            .where(SignalsUsers.is_active == 1, Pairs.pair == pair, Pairs.timeframe == timeframe)
+            .where(
+                SignalsUsers.is_active == 1,
+                Pairs.pair == pair,
+                Pairs.timeframe == timeframe,
+            )
         )
         return list(set(row[0] for row in result.fetchall()))
 
@@ -32,12 +36,10 @@ class SignalsDAO(BaseDAO[SignalsUsers]):
         result = await self.session.execute(
             select(SignalsUsers.user_id).where(SignalsUsers.is_active == 1)
         )
-        return [{'user_id': row[0]} for row in result.fetchall()]
+        return [{"user_id": row[0]} for row in result.fetchall()]
 
     async def get_all_signal_users(self) -> List[int]:
-        result = await self.session.execute(
-            select(SignalsUsers.user_id)
-        )
+        result = await self.session.execute(select(SignalsUsers.user_id))
         return [row[0] for row in result.fetchall()]
 
     async def get_signals_users(self, user_id: int) -> List[str]:
