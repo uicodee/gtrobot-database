@@ -8,6 +8,6 @@ class UserPurchases(BaseModel):
 
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
     purchase_id: Mapped[int] = mapped_column(Integer, unique=True)
-    purchuase_sum: Mapped[float] = mapped_column(Numeric)
+    purchase_sum: Mapped[float] = mapped_column(Numeric)
     current_pps_level: Mapped[int] = mapped_column(Integer, default=1)
     transaction_id: Mapped[int] = mapped_column(Integer)

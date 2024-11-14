@@ -1,4 +1,4 @@
-from sqlalchemy import String, Boolean, Integer, Text
+from sqlalchemy import String, Boolean, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .base import BaseModel
@@ -13,3 +13,4 @@ class LeaderboardUsers(BaseModel):
     period_type: Mapped[str] = mapped_column(String, default="DAILY")
     is_new_profile: Mapped[bool] = mapped_column(Boolean, default=True)
     is_active_user: Mapped[bool] = mapped_column(Boolean, default=True)
+    user_id: Mapped[str] = mapped_column(String)
