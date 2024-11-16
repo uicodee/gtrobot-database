@@ -1,12 +1,12 @@
 from .base import BaseModel
-from sqlalchemy import Integer, Text, Numeric, ForeignKey, Boolean
+from sqlalchemy import Integer, Text, Numeric, ForeignKey, Boolean, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column
 
 
 class UserWithdraws(BaseModel):
     __tablename__ = "user_withdraws"
 
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.user_id"))
+    user_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("users.user_id"))
     withdraw_source_currency: Mapped[str] = mapped_column(Text)
     withdraw_source_amount: Mapped[float] = mapped_column(Numeric)
     withdraw_currency: Mapped[str] = mapped_column(Text, default="USDT")

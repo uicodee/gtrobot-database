@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, ForeignKey, String, Numeric, Boolean
+from sqlalchemy import Integer, ForeignKey, String, Numeric, Boolean, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .base import BaseModel
@@ -7,7 +7,7 @@ from .base import BaseModel
 class LeaderboardPositions(BaseModel):
     __tablename__ = "leaderboard_positions"
 
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+    user_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("users.id"))
     encrypted_uid: Mapped[str] = mapped_column(String)
     amount: Mapped[float] = mapped_column(Numeric)
     symbol: Mapped[str] = mapped_column(String)

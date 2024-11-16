@@ -8,6 +8,6 @@ class User(BaseModel):
     __tablename__ = "users"
 
     user_id: Mapped[int] = mapped_column(BigInteger, unique=True)
-    status: Mapped[str] = mapped_column(String, default="start")
+    status: Mapped[str] = mapped_column(String, default="start", nullable=True)
     user_quiz: Mapped[int] = mapped_column(Integer, default=0)
     locale: Mapped[str] = mapped_column(String, default="uz")

@@ -12,7 +12,7 @@ class AdminSettings(BaseModel):
     task_counter: Mapped[int] = mapped_column(Integer, default=0)
     task_text: Mapped[str] = mapped_column(String, default="None")
     task_group_id: Mapped[int] = mapped_column(Integer, default=0)
-    task_photo_id: Mapped[str] = mapped_column(String)
+    task_photo_id: Mapped[str] = mapped_column(String, nullable=True)
     is_quiz_active: Mapped[bool] = mapped_column(Boolean, default=False)
     quiz_mailing_text: Mapped[str] = mapped_column(
         Text,

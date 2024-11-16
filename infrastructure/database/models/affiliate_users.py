@@ -1,12 +1,12 @@
 from .base import BaseModel
-from sqlalchemy import Integer, Numeric, Text
+from sqlalchemy import Integer, Numeric, Text, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column
 
 
 class AffiliateUsers(BaseModel):
     __tablename__ = "affiliate_users"
 
-    user_id: Mapped[int] = mapped_column(Integer, unique=True)
+    user_id: Mapped[int] = mapped_column(BigInteger, unique=True)
     user_name: Mapped[str] = mapped_column(Text)
     user_last_name: Mapped[str] = mapped_column(Text)
     user_number: Mapped[str] = mapped_column(Text)

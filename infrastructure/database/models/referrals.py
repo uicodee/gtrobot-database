@@ -9,5 +9,5 @@ class Referrals(BaseModel):
 
     user_id: Mapped[int] = mapped_column(BigInteger)
     referral_user_id: Mapped[int] = mapped_column(BigInteger)
-    referral_username: Mapped[str] = mapped_column(String)
+    referral_username: Mapped[str] = mapped_column(String, nullable=True)
     referral_reg_data: Mapped[int] = mapped_column(Numeric)

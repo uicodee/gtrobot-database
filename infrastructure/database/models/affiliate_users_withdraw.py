@@ -1,12 +1,12 @@
 from .base import BaseModel
-from sqlalchemy import Integer, Numeric, Text
+from sqlalchemy import Integer, Numeric, Text, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column
 
 
 class AffiliateUsersWithdraw(BaseModel):
     __tablename__ = "affiliate_users_withdraw"
 
-    user_id: Mapped[float] = mapped_column(Numeric)
+    user_id: Mapped[int] = mapped_column(BigInteger)
     user_sum: Mapped[float] = mapped_column(Numeric)
     wallet_address: Mapped[str] = mapped_column(Text)
     withdraw_time: Mapped[int] = mapped_column(Numeric)

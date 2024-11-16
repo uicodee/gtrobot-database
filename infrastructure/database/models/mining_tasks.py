@@ -7,7 +7,7 @@ class MiningTasks(BaseModel):
     __tablename__ = "mining_tasks"
 
     task_text: Mapped[str] = mapped_column(Text)
-    task_link: Mapped[str] = mapped_column(Text)
-    task_group_id: Mapped[int] = mapped_column(Integer)
+    task_link: Mapped[str] = mapped_column(Text, nullable=True)
+    task_group_id: Mapped[int] = mapped_column(Integer, nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     is_required: Mapped[bool] = mapped_column(Boolean, default=False)

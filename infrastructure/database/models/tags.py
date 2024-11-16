@@ -8,4 +8,4 @@ class Tags(BaseModel):
 
     name: Mapped[str] = mapped_column(Text)
     locale: Mapped[str] = mapped_column(Text)
-    parent_id: Mapped[int] = mapped_column(Integer, ForeignKey("tags.id"))
+    parent_id: Mapped[int] = mapped_column(Integer, ForeignKey("tags.id"), nullable=True)

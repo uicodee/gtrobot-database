@@ -1,4 +1,4 @@
-from sqlalchemy import Numeric, Text, Integer
+from sqlalchemy import Numeric, Text, Integer, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .base import BaseModel
@@ -7,7 +7,7 @@ from .base import BaseModel
 class ForexUsersOrderHistory(BaseModel):
     __tablename__ = "forex_users_order_history"
 
-    user_id: Mapped[int] = mapped_column(Integer)
+    user_id: Mapped[int] = mapped_column(BigInteger)
     order_type: Mapped[str] = mapped_column(Text)
     order_symbol: Mapped[str] = mapped_column(Text)
     order_volume: Mapped[float] = mapped_column(Numeric)

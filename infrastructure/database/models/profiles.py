@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, String, Numeric, Boolean
+from sqlalchemy import Integer, String, Numeric, Boolean, BigInteger
 from sqlalchemy.orm import mapped_column, Mapped
 
 from .base import BaseModel
@@ -7,7 +7,7 @@ from .base import BaseModel
 class Profile(BaseModel):
     __tablename__ = "profiles"
 
-    user_id: Mapped[int] = mapped_column(Integer, unique=True)
+    user_id: Mapped[int] = mapped_column(BigInteger, unique=True)
     user_name: Mapped[str] = mapped_column(String, nullable=False)
     user_last_name: Mapped[str] = mapped_column(String, nullable=False)
     user_num: Mapped[str] = mapped_column(String, nullable=False)
